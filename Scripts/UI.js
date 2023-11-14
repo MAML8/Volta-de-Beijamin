@@ -32,8 +32,5 @@ class UI{
       }
     }
     pontuação=pontuação+0.2;
-    inimigos.forEach(a=>{
-      if(ameaça>=a.ameaça) pontuação=pontuação+0.1;
-    })
   }
 }

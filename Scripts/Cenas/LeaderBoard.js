@@ -16,8 +16,7 @@ class LeaderBoard{
       if(menumu.isPlaying()==false)
         menumu.loop();
       this.voltar.show();
-      $.getJSON("./PHP/getScores.php", {}).done((dados) => {
-        console.log(dados[0].nome)
+      $.getJSON("./PHP/getScores.php", (dados) => {
         textFont(pixelito);
         image(aa,0,0, width, height);
         fill('green');

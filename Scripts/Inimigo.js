@@ -1,14 +1,13 @@
 class Inimigo extends Animacao{
-  constructor(tipo,ameaça,delay){
+  constructor(tipo,delay){
     super(gota, width, 274/4.3, 274/4.3, 274, 274, 2);
-    this.x=this.x+delay;
+    this.x=this.x+delay*300;
     this.delay=delay;
     this.encostado=false;
-    this.ameaça=ameaça;
     this.tipo = tipo;
     this.speed = 12;
     
-    this.tipos=["normal","voador","voadorb","grande"];
+    //this.tipos=["normal","voador","voadorb","grande"];
     if(this.tipo==="normal"){
        
     } else if(this.tipo==="voador"){
@@ -28,15 +27,18 @@ class Inimigo extends Animacao{
     }
   }
   tick(){
-    if(this.x>-this.iwidth&&ameaça>=this.ameaça){
+    console.log(this.x);
+    if(this.x>-this.iwidth){
       this.x=this.x - this.speed;
     }else if(this.x<-this.iwidth){
-      this.reaparece();
+      //this.reaparece();
       ameaça++;
     }
-   }
+  }
+  /*
   reaparece(){
     this.x=width;
     this.encostado=false;
   }
+  */
 }

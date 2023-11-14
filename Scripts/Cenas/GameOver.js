@@ -4,14 +4,15 @@ class GameOver{
     
     this.voltar = new Botao("Menu Principal", width/2, height - 50, () => mudarCena("menu"));
     this.reiniciar = new Botao("Reiniciar", width/2, height - 125,() => mudarCena("jogo"));
-    this.add = new Botao("Adicionar ao Leader Board", width/2+100, height-200, ()=>this.pontuar());
+    this.add = new Botao("Adicionar ao Leader Board", width/2, height-200, ()=>this.pontuar());
     this.input = createInput("anônimo");
     this.input.parent("holder");
-    this.input.position(width/2-200, height-200);
+    this.input.position(width/2-200, height-230);
     this.input.hide();
   }
   pontuar(){
-    $.get("./PHP/newScore.php", {ponto: this.pontuação, nome: this.input.value()}).done((a)=>{
+    let postData = {ponto: this.pontuação, nome: this.input.value()};
+    $.post("./PHP/newScore.php/", postData, (a)=>{
       this.add.hide();
       this.input.hide();
       textSize(medio);

@@ -2,17 +2,13 @@ class Jogo{
   constructor(){
     cenario=new Cenario(cidade,3);
     personagem=new Personagem(/*imgpersonagem,0,408/6,768/6,408,768,7*/);
-    inimigos =[new Inimigo("normal", 0, 0),
-               new Inimigo("normal", 3, 500),
-               new Inimigo("grande", 10, 1100),
-               new Inimigo("voador", 16,274/4.3),
-               new Inimigo("grande", 24, 1100-274/4.3),
-               new Inimigo("voadorb", 38, (274/4.3)*3),
-               new Inimigo("voadorb", 52, 250)]
+
+    this.enemyGroups=[
+                      function (){return [new Inimigo("normal", 0)]},
+                      function (){return [new Inimigo("normal", 0), new Inimigo("normal", 1)]}
+                    ];
     this.inimigos=[];
-    inimigos.forEach(inimigo=>{
-      this.inimigos.push(inimigo);
-    })
+    this.spawn();
     
     powerup=new PowerUP("escudo");
     
@@ -105,32 +101,44 @@ class Jogo{
             personagem.iwidth,personagem.iheight+(12/6));
     }
     
-      this.inimigos.forEach(inimigo=>{
-        inimigo.render();
-        inimigo.tick();
+    this.inimigos.forEach(inimigo=>{
+      inimigo.render();
+      inimigo.tick();
 
-        if(personagem.collision(inimigo)&&inimigo.encostado==false){
-          personagem.perdervida(1);
-          inimigo.encostado=true;
-          if(personagem.vida<=0){
-            musica.stop();
-            muerto.play();
-            personagem.machuca=personagem.tempomachuca;
-            gameover.pontuação=pontuação;
-            mudarCena("gameover");
-            this.reiniciar();
-        }}
-      })
-    
-      powerup.render();
-      powerup.tick();
-      if(personagem.collisionp(powerup)&&powerup.encostado==false){
-        powerup.efeito(personagem);
-        powerup.encostado=true;
-        powerup.aparecendo=false;
-        pling.play();
+      if(personagem.collision(inimigo)&&inimigo.encostado==false){
+        personagem.perdervida(1);
+        inimigo.encostado=true;
+        if(personagem.vida<=0){
+          musica.stop();
+          muerto.play();
+          personagem.machuca=personagem.tempomachuca;
+          gameover.pontuação=pontuação;
+          mudarCena("gameover");
+          this.reiniciar();
+      }}
+    })
+    if(this.inimigos[0].x<-this.inimigos[0].iwidth){
+      this.inimigos.shift();
+      if(this.inimigos.length<1){
+        this.spawn();
       }
-    
+    }
+  
+    powerup.render();
+    powerup.tick();
+    if(personagem.collisionp(powerup)&&powerup.encostado==false){
+      powerup.efeito(personagem);
+      powerup.encostado=true;
+      powerup.aparecendo=false;
+      pling.play();
+    }
+  
+  }
+  spawn(){
+    const newEnemies = this.enemyGroups[Math.floor(Math.random()*this.enemyGroups.length)]();
+    newEnemies.forEach(a=>{
+      this.inimigos.push(a)
+    });
   }
   /*
   vencer(){

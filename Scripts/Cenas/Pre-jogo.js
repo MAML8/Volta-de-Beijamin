@@ -3,7 +3,7 @@ class Prejogo{
     this.xbase = width/10;
     this.beijamin=new Animacao(imgpersonagem,this.xbase+900,
                                408/6,768/6,408,768,7);
-    this.beijamin.y=height-500;
+    this.beijamin.y=height-200;
 
     
     this.inicio = new Botao("Jogar", width/2, height - 125, () => mudarCena("jogo"));

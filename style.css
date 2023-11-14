@@ -19,6 +19,7 @@ canvas {
   border: none;
   border-radius: .75rem;
   color: #fff;
+  margin: auto;
 }
 
 .botao-tela-inicial:hover {
