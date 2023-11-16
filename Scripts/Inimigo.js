@@ -3,7 +3,6 @@ class Inimigo extends Animacao{
     super(gota, width, 274/4.3, 274/4.3, 274, 274, 2);
     this.x=this.x+delay*300;
     this.delay=delay;
-    this.encostado=false;
     this.tipo = tipo;
     this.speed = 12;
     
@@ -30,15 +29,11 @@ class Inimigo extends Animacao{
     console.log(this.x);
     if(this.x>-this.iwidth){
       this.x=this.x - this.speed;
-    }else if(this.x<-this.iwidth){
-      //this.reaparece();
-      ameaça++;
     }
   }
   /*
   reaparece(){
     this.x=width;
-    this.encostado=false;
   }
   */
 }

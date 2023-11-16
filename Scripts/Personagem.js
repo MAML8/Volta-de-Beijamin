@@ -13,14 +13,14 @@ class Personagem extends Animacao{
     this.hurt = new Animacao(ai,this.x,this.iwidth,this.iheight,
                              this.swidth,this.sheight,2);
     this.rainbow=new Animacao(rainbow,this.x,this.iwidth,
-                  this.iheight,this.swidth,this.sheight,7);
-    this.machuca=10;
-    this.tempomachuca=10;
+                  this.iheight,this.swidth,this.sheight,10);
+    this.machuca=1.0;
+    this.tempomachuca=1.0;
     this.sainbow=0;
     this.mainbow=1;
     this.perdendoinvencivel=false;
   }
-  gravidade(){
+  tick(){
     this.y = this.y + this.jspeed;
     this.jspeed = this.jspeed+this.g;
     if(this.y>=this.chao){
@@ -30,6 +30,45 @@ class Personagem extends Animacao{
       this.pulando2=false;
     }
     this.hurt.y=this.y;
+    if(this.machuca<this.tempomachuca){
+      this.machuca+=deltaTime/1000.0;
+    }
+  }
+  trueRender(){
+    if(this.machuca<this.tempomachuca){
+      this.hurt.render();
+    } else if(this.pulando){
+      if(this.cs()){
+        image(pvindo,this.x,this.y,
+              this.iwidth,this.iheight);
+        if(this.invencivel){
+          image(rpvindo,this.x,this.y,
+              this.iwidth,this.iheight);
+        }
+      } else{
+        image(pindo,this.x,this.y,
+              this.iwidth,this.iheight);
+        if(this.invencivel){
+          image(rpindo,this.x,this.y,
+              this.iwidth,this.iheight);
+        }
+      }
+    } else this.aparecendo=true;
+    this.render();
+    if(this.invencivel&&this.aparecendo){
+      this.mesclaranimação(this.rainbow, this);
+      if(this.perdendoinvencivel==false)
+        this.rainbow.render();
+      else{ if(this.sainbow==this.mainbow){
+        this.rainbow.render();
+        this.sainbow=0;
+      } else this.sainbow++;
+      }
+    } 
+    if(this.escudo){
+      image(pescudo, this.x,this.y-(1),
+            this.iwidth,this.iheight+(12/6));
+    }
   }
   pulo(){
     if(this.pulando==false){
@@ -48,13 +87,15 @@ class Personagem extends Animacao{
   }
   perdervida(h){
     if(this.invencivel==false){
-      if(this.escudo==false){ 
+      if(this.escudo==false){
+        if(this.machuca>=this.tempomachuca){
         this.vida=this.vida-h;
         this.machuca=0;
         this.aparecendo=false;
         ouch.play();
-      } else{
+      }} else{
         this.escudo=false;
+        this.machuca=0;
         creck.play();
       }
     }

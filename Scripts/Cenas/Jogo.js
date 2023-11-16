@@ -4,11 +4,23 @@ class Jogo{
     personagem=new Personagem(/*imgpersonagem,0,408/6,768/6,408,768,7*/);
 
     this.enemyGroups=[
-                      function (){return [new Inimigo("normal", 0)]},
-                      function (){return [new Inimigo("normal", 0), new Inimigo("normal", 1)]}
+                      {ameaça: 0, invocar: function (){return [new Inimigo("normal", 0)]}},
+                      {ameaça: 0, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("normal", 1)]}}, 
+                      {ameaça: 0, invocar: function (){return [new Inimigo("grande", 0)]}}, 
+                      {ameaça: 0, invocar: function (){return [new Inimigo("voadorb", 0)]}},
+                      {ameaça: 6, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.5), new Inimigo("normal", 1)]}},
+                      {ameaça: 6, invocar: function (){return [new Inimigo("grande", 0), new Inimigo("normal", 0.2)]}},
+                      {ameaça: 6, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.4)]}},
+                      {ameaça: 18, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("normal", 0.2), new Inimigo("normal", 0.4)]}},
+                      {ameaça: 13, invocar: function (){return [new Inimigo("grande", 0), new Inimigo("voador", 0.4)]}},
+                      {ameaça: 20, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("grande", 0.2)]}},
+                      {ameaça: 40, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.5), new Inimigo("normal", 1), new Inimigo("voadorb", 1.5), new Inimigo("normal", 2)]}},
+                      {ameaça: 40, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.5), new Inimigo("normal", 1), new Inimigo("normal", 1.2), new Inimigo("grande", 1.4), new Inimigo("voador", 1.8)]}},
+                      {ameaça: 40, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("normal", 0.2), new Inimigo("normal", 1), new Inimigo("grande", 1.2), new Inimigo("normal", 1.4), new Inimigo("voador", 1.8)]}},
+                      {ameaça: 40, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("normal", 0.2), new Inimigo("normal", 0.4), new Inimigo("normal", 0.6), new Inimigo("normal", 0.8)]}},
+                      {ameaça: 40, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("grande", 0.2), new Inimigo("normal", 0.4), new Inimigo("normal", 1.4), new Inimigo("grande", 1.6), new Inimigo("normal", 1.8)]}},
                     ];
     this.inimigos=[];
-    this.spawn();
     
     powerup=new PowerUP("escudo");
     
@@ -20,10 +32,10 @@ class Jogo{
     pontuação = 0;
     personagem.vida=3;
     ameaça=0;
-    this.inimigos.forEach(inimigo=>{
-      inimigo.x = width+inimigo.delay;
-      inimigo.encostado=false;
-    })
+    while(this.inimigos.length>0){
+      this.inimigos.pop();
+    }
+    this.spawn();
   }
   pausar(){
     image(pausa,0,0,width,height);
@@ -62,63 +74,27 @@ class Jogo{
     cenario.mover();
     ui.render();
     
-    personagem.gravidade();
-    if(personagem.machuca<personagem.tempomachuca){
-      personagem.hurt.render();
-      personagem.machuca++;
-    }
-    else if(personagem.pulando){
-      if(personagem.cs()){
-        image(pvindo,personagem.x,personagem.y,
-              personagem.iwidth,personagem.iheight);
-        if(personagem.invencivel){
-          image(rpvindo,personagem.x,personagem.y,
-              personagem.iwidth,personagem.iheight);
-        }
-      } else{
-        image(pindo,personagem.x,personagem.y,
-              personagem.iwidth,personagem.iheight);
-        if(personagem.invencivel){
-          image(rpindo,personagem.x,personagem.y,
-              personagem.iwidth,personagem.iheight);
-        }
-      }
-    }
-    else personagem.aparecendo=true;
-    personagem.render();
-    if(personagem.invencivel&&personagem.aparecendo){
-      personagem.mesclaranimação(personagem.rainbow, personagem);
-      if(personagem.perdendoinvencivel==false)
-        personagem.rainbow.render();
-      else{ if(personagem.sainbow==personagem.mainbow){
-        personagem.rainbow.render();
-        personagem.sainbow=0;
-      } else personagem.sainbow++;
-      }
-    } 
-    if(personagem.escudo){
-      image(pescudo, personagem.x,personagem.y-(1),
-            personagem.iwidth,personagem.iheight+(12/6));
-    }
+    personagem.tick();
+    personagem.trueRender();
     
     this.inimigos.forEach(inimigo=>{
       inimigo.render();
       inimigo.tick();
 
-      if(personagem.collision(inimigo)&&inimigo.encostado==false){
+      if(personagem.collision(inimigo)){
         personagem.perdervida(1);
-        inimigo.encostado=true;
         if(personagem.vida<=0){
           musica.stop();
           muerto.play();
-          personagem.machuca=personagem.tempomachuca;
           gameover.pontuação=pontuação;
+          personagem.machuca = personagem.tempomachuca;
           mudarCena("gameover");
           this.reiniciar();
       }}
     })
     if(this.inimigos[0].x<-this.inimigos[0].iwidth){
       this.inimigos.shift();
+      ameaça++;
       if(this.inimigos.length<1){
         this.spawn();
       }
@@ -135,8 +111,10 @@ class Jogo{
   
   }
   spawn(){
-    const newEnemies = this.enemyGroups[Math.floor(Math.random()*this.enemyGroups.length)]();
-    newEnemies.forEach(a=>{
+    let newEnemies;
+    do {newEnemies = this.enemyGroups[Math.floor(Math.random()*this.enemyGroups.length)];
+    } while(newEnemies["ameaça"]>ameaça);
+    newEnemies["invocar"]().forEach(a=>{
       this.inimigos.push(a)
     });
   }

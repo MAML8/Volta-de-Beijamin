@@ -19,7 +19,7 @@ class PowerUP extends Animacao{
   tick(){
     this.x=this.x - 8;
      if(this.x<-this.iwidth){
-       this.x=width*3;
+       this.x=width*1.5+Math.random()*5;
        this.mudartipo();
        this.encostado=false;
        this.aparecendo=true;
@@ -35,7 +35,7 @@ class PowerUP extends Animacao{
     } else if(this.tipo==="invencível"){
       player.invencivel=true;
       setTimeout(() => {player.perdendoinvencivel = true}, 5000);
-      setTimeout(() => {player.invencivel = false}, 6000);
+      setTimeout(() => {player.invencivel = false; player.perdendoinvencivel=false}, 6000);
     }
      pontuação=pontuação+15;
   }
