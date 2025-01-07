@@ -20,6 +20,18 @@ class Personagem extends Animacao{
     this.mainbow=1;
     this.perdendoinvencivel=false;
   }
+  pulo(){
+    if(this.pulando==false){
+      this.pulando = true;
+      this.jspeed = -26;
+      this.aparecendo=false;
+      pulito.play();
+    } else if(this.pulando2==false){
+      this.pulando2=true;
+      this.jspeed = -26;
+      pulito.play();
+    }
+  }
   tick(){
     this.y = this.y + this.jspeed;
     this.jspeed = this.jspeed+this.g;
@@ -68,18 +80,6 @@ class Personagem extends Animacao{
     if(this.escudo){
       image(pescudo, this.x,this.y-(1),
             this.iwidth,this.iheight+(12/6));
-    }
-  }
-  pulo(){
-    if(this.pulando==false){
-      this.pulando = true;
-      this.jspeed = -26;
-      this.aparecendo=false;
-      pulito.play();
-    } else if(this.pulando2==false){
-      this.pulando2=true;
-      this.jspeed = -26;
-      pulito.play();
     }
   }
   cs(){

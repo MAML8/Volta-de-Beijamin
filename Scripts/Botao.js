@@ -2,7 +2,7 @@ class Botao{
   constructor(texto, x, y, onpress) {
     this.texto = texto;
     this.x = x;
-    this.y = y;
+    this.y = y+(windowHeight-height)/2;
     
     this.botao = createButton(this.texto);
     this.botao.parent("holder");

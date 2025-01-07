@@ -15,8 +15,11 @@ class LeaderBoard{
         musica.stop();
       if(menumu.isPlaying()==false)
         menumu.loop();
-      this.voltar.show();
+        this.loading = true;
+        this.loadingTimer=0;
       $.getJSON("./PHP/getScores.php", (dados) => {
+        this.loading = false;
+        this.voltar.show();
         textFont(pixelito);
         image(aa,0,0, width, height);
         fill('green');
@@ -41,7 +44,15 @@ class LeaderBoard{
       this.voltar.hide();
     }
     draw(){
-
+      if(this.loading){
+        image(aa,0,0, width, height);
+        textFont(pixelito);
+        fill('green');
+        textAlign(CENTER);
+        textSize(grande);
+        text("Carregando."+ (this.loadingTimer%3>=1 ? "." : "") + (this.loadingTimer%3>=2 ? "." : ""), width/2, height/2);
+        this.loadingTimer+=deltaTime/200.0;
+      }
     }
     
   }

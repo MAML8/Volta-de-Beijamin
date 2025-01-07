@@ -1,6 +1,6 @@
 class Jogo{
   constructor(){
-    cenario=new Cenario(cidade,3);
+    cenario=new Cenario(cidade,4);
     personagem=new Personagem(/*imgpersonagem,0,408/6,768/6,408,768,7*/);
 
     this.enemyGroups=[
@@ -10,9 +10,9 @@ class Jogo{
                       {ameaça: 0, invocar: function (){return [new Inimigo("voadorb", 0)]}},
                       {ameaça: 6, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.5), new Inimigo("normal", 1)]}},
                       {ameaça: 6, invocar: function (){return [new Inimigo("grande", 0), new Inimigo("normal", 0.2)]}},
-                      {ameaça: 6, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.4)]}},
+                      {ameaça: 6, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.5)]}},
                       {ameaça: 18, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("normal", 0.2), new Inimigo("normal", 0.4)]}},
-                      {ameaça: 13, invocar: function (){return [new Inimigo("grande", 0), new Inimigo("voador", 0.4)]}},
+                      {ameaça: 13, invocar: function (){return [new Inimigo("grande", 0), new Inimigo("voador", 0.5)]}},
                       {ameaça: 20, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("grande", 0.2)]}},
                       {ameaça: 40, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.5), new Inimigo("normal", 1), new Inimigo("voadorb", 1.5), new Inimigo("normal", 2)]}},
                       {ameaça: 40, invocar: function (){return [new Inimigo("normal", 0), new Inimigo("voadorb", 0.5), new Inimigo("normal", 1), new Inimigo("normal", 1.2), new Inimigo("grande", 1.4), new Inimigo("voador", 1.8)]}},
@@ -37,20 +37,20 @@ class Jogo{
     }
     this.spawn();
   }
+  keyPressed(){
+    if(key==='w'||key==='W'||key==='ArrowUp'||key===" "){
+      personagem.pulo();
+    }
+    if(key==='Escape'||key==='p'||key==='P'){
+      this.pausar();
+    }
+  }
   pausar(){
     image(pausa,0,0,width,height);
     fill('white');
     textAlign(CENTER);
     text("Pausado",width/2,height/2);
     mudarCena("pause")
-  }
-  keyPressed(){
-    if(key==='w'||key==='ArrowUp'){
-      personagem.pulo();
-    }
-    if(key==='Escape'||key==='p'){
-      this.pausar();
-    }
   }
   touchStarted(){
     personagem.pulo();
@@ -74,8 +74,8 @@ class Jogo{
     cenario.mover();
     ui.render();
     
-    personagem.tick();
     personagem.trueRender();
+    personagem.tick();
     
     this.inimigos.forEach(inimigo=>{
       inimigo.render();

@@ -19,7 +19,7 @@ class PowerUP extends Animacao{
   tick(){
     this.x=this.x - 8;
      if(this.x<-this.iwidth){
-       this.x=width*1.5+Math.random()*5;
+       this.x=width*1.5+Math.random()*width*3;
        this.mudartipo();
        this.encostado=false;
        this.aparecendo=true;

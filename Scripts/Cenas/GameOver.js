@@ -7,7 +7,9 @@ class GameOver{
     this.add = new Botao("Adicionar ao Leader Board", width/2, height-200, ()=>this.pontuar());
     this.input = createInput("anônimo");
     this.input.parent("holder");
-    this.input.position(width/2-200, height-230);
+    this.input.position(width/2-200, height-200);
+    this.input.center("horizontal");
+    this.input.attribute("placeholder", "insira seu nome aqui");
     this.input.hide();
   }
   pontuar(){
@@ -30,6 +32,7 @@ class GameOver{
     this.voltar.show();
     this.reiniciar.show();
     this.add.show();
+    this.input.value("");
     this.input.show();
     image(treco, 0, 0, width, height);
     image(gameo, width/2-250, 50, 500, 100);
