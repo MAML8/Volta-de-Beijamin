@@ -14,7 +14,7 @@ class GameOver{
   }
   pontuar(){
     let postData = {ponto: this.pontuação, nome: this.input.value()};
-    $.post("./PHP/newScore.php/", postData, (a)=>{
+    $.post("http://criadormarquiano.unaux.com/GameScoresDB/VoltadeBeijamin.php", postData, (a)=>{
       this.add.hide();
       this.input.hide();
       textSize(medio);

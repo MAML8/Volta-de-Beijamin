@@ -17,7 +17,7 @@ class LeaderBoard{
         menumu.loop();
         this.loading = true;
         this.loadingTimer=0;
-      $.getJSON("./PHP/getScores.php", (dados) => {
+      $.getJSON("http://criadormarquiano.unaux.com/GameScoresDB/VoltadeBeijamin.php", (dados) => {
         this.loading = false;
         this.voltar.show();
         textFont(pixelito);
@@ -38,6 +38,15 @@ class LeaderBoard{
           text(dados[i].nome, x1, 70+y*i);
           text(dados[i].ponto, x2, 70+y*i);
         }
+      }).fail((jqxhr, textStatus, error) =>{
+        this.loading = false;
+        console.log( "Request Failed: " + textStatus + ", " + error);
+        image(aa,0,0, width, height);
+        fill('red');
+        textAlign(CENTER);
+        textSize(grande);
+        text("Erro ao acessar banco de dados", width/2, height/2);
+        this.voltar.show();
       });
     }
     stop(){

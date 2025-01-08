@@ -56,3 +56,4 @@ let cena="menu";
 let cenas;
 
 let grande = 30, medio = 20, pequeno = 15;
+//let DataBaseURL = "http://criadormarquiano.unaux.com/GameScoresDB/VoltadeBeijamin.php";

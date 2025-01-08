@@ -26,7 +26,7 @@ class Inimigo extends Animacao{
     }
   }
   tick(){
-    console.log(this.x);
+    //console.log(this.x);
     if(this.x>-this.iwidth){
       this.x=this.x - this.speed;
     }
