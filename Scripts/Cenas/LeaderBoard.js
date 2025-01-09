@@ -17,7 +17,7 @@ class LeaderBoard{
         menumu.loop();
         this.loading = true;
         this.loadingTimer=0;
-      $.getJSON("https://criadormarquiano.unaux.com/GameScoresDB/VoltadeBeijamin.php", (dados) => {
+      $.getJSON("./PHP/score.php", (dados) => {
         this.loading = false;
         this.voltar.show();
         textFont(pixelito);
